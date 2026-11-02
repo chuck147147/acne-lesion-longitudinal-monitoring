@@ -8,6 +8,8 @@
 
 在 Windows 上双击 [`start_acne_monitor.pyw`](start_acne_monitor.pyw)，或在 VS Code 运行 [`start_acne_monitor.py`](start_acne_monitor.py)，即可打开桌面工作台。工作台可分别为左脸、右脸、下巴选择照片，也可一次选择三张。程序默认复用最近一次已完成人工复核的结果作为基准；也可选择该结果目录中的 `current_01_annotated.jpg` 至 `current_03_annotated.jpg` 切换基准。基准直接读取已复核的框和等级，不再运行痘痘检测或分级模型。人工修正窗口只包含本次三张新照片，基准照片及标注显示在旁边供参考。每次复核完成会更新全时点趋势；“查看长期趋势”按钮也可单独打开历史趋势，不重跑模型。首次使用时可清除基准，只生成当前基线。当前桌面入口仍依赖项目内已安装的 Python 运行环境；独立 `.exe` 尚未打包。
 
+**入口说明：** `start_acne_monitor.py` 和 `start_acne_monitor.pyw` 用于打开桌面界面；`scripts/monitor_three_photos.py` 是底层命令行脚本，不能直接空参数运行。运行它时必须提供 `--current` 三张照片，或使用 `--history-only` 更新历史趋势。空参数启动时出现“需要提供照片”的 `ValueError` 提示，表示缺少命令行参数，不代表模型检测失败。VS Code 的 `Pylance server crashed` 是编辑器语言服务问题，与 Python 程序运行分开；如需判断程序是否报错，应看终端里的 Python traceback。
+
 模型检测本次照片后会打开逐框复核工具：只需检查本次三张，可补画漏检、删除误检、重画错误框和修正类别；基准照片仅作为带有已复核标注的参考。未手动指定类别的补画或重画框会重新分类。逐框复核完成后，程序会使用面部配准、位置、框大小和局部外观特征自动建立一对一对应，并延续匹配候选的稳定 `track_id`。自动匹配可能受光线、姿势和取景差异影响；未匹配病灶保留独立编号，不自动判为新发或消退。编号及逐时点观察保存在本机 `outputs/acne_monitor_history/lesion_tracks.csv`。
 
 检测器遇到面积较大的框时，会对该区域局部放大约 3 倍再次检测；若找到多个较小的病灶候选，会用小框替换大框。拆分证据不足时会在复核列表标记“**大框需拆分**”，供人工重画或补框。该步骤使用现有检测器做局部复检，不是像素级分割，也不会通过 NMS 合并相邻的病灶框。
@@ -19,7 +21,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-monitor.txt
 ```
 
-非 Windows 系统可直接运行 Python 脚本；`.pyw` 图形入口仅面向 Windows。
+非 Windows 系统可直接运行命令行 Python 脚本；桌面界面入口面向 Windows。
 
 如需配置本机默认基线，把 [`monitor.local.example.json`](monitor.local.example.json) 复制为 `monitor.local.json`，再填入上次已复核的结果目录。未配置时会自动选择最近一次已复核的结果。`monitor.local.json` 已加入忽略规则，不会随仓库提交。
 
