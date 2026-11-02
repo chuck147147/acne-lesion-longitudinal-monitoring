@@ -1,0 +1,5 @@
+ultralytics==8.4.189
+mediapipe==0.10.32
+opencv-python>=4.8
+Pillow>=10
+numpy>=1.24

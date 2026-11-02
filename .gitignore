@@ -1,0 +1,53 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+Thumbs.db
+
+# Local datasets contain face photos, annotations, and personal follow-up data.
+/data/
+
+# Generated review boards and reports may contain personal face images/results.
+/outputs/
+/reports/
+
+# Local monitor settings can point to private baseline photos.
+/monitor.local.json
+
+# Training and inference artifacts are generated locally and are not source files.
+*.pt
+*.pth
+*.onnx
+*.engine
+
+data/raw/
+data/processed/
+runs/
+weights/*.task
+
+# Local participant-specific analyses and launchers; keep the reusable core instead.
+/docs/长期追踪_第一轮候选匹配说明.md
+/scripts/compare_confirmed_lesions_by_day.py
+/scripts/evaluate_temporal_test_v3.py
+/scripts/evaluate_v3_validation.py
+/scripts/evaluate_v3_v4_ensemble_validation.py
+/scripts/evaluate_v3_v4_consensus_test.py
+/scripts/learn_manual_correspondences.py
+/scripts/manual_lesion_correspondence.py
+/scripts/propose_confirmed_row_pairs.py
+/scripts/propose_longitudinal_tracks.py
+/scripts/review_longitudinal_tracks.py
+/scripts/summarize_active_lesions_by_photo.py
+/scripts/train_box_severity_yolo_cls_v2.py
+/scripts/train_box_severity_yolo_cls_v3_temporal.py
+/start_longitudinal_track_review.pyw
+/start_manual_lesion_correspondence.pyw
+/start_user_photo*_annotator.pyw
+/scripts/fetch_public_acne_examples.py
+/scripts/train_box_severity_yolo_cls.py
+/scripts/prepare_box_severity_pilot.py
+/scripts/predict_box_severity_on_user_pilot.py
+/start_box_severity_annotator.pyw
